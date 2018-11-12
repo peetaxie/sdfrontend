@@ -1,0 +1,60 @@
+<head> <base href="/home"></head>
+<div style="width: 100%;height: 100%">
+<agm-map  [latitude]="lat" [longitude]="lng" [zoom]="6">
+
+  <ng-container >
+    <agm-polyline *ngFor="let group of Routes;let i = index;" strokeColor="black" [strokeOpacity]="0.6" [clickable]=false>
+         <agm-marker  [latitude]="positions[i].Lat" [longitude]="positions[i].Long"  [iconUrl]="icon" >
+           
+            <agm-info-window [disableAutoPan]=true  #truckwindow>
+                <p>Alt:&nbsp;<span>{{cars[i].Alt}}</span></p>
+                <p>GPS_head:&nbsp;{{cars[i].GPS_head}}</p>
+                <p>Acc_mag:&nbsp;{{cars[i].Acc_mag}}</p>
+                <p>Conveyor:&nbsp;{{cars[i].Conveyor}}</p>
+                <p>Spinner:&nbsp;{{cars[i].Spinner}}</p>
+                <p>Prewet:&nbsp;{{cars[i].Prewet}}</p>
+                <p>Time:&nbsp;{{cars[i].time}}</p>
+            </agm-info-window>
+
+         </agm-marker>
+         
+<!--         <agm-info-window [isOpen]="point.isopen" (infoWindowClose)="windowclose(i,x)" [latitude]="point.latitude"  [longitude]="point.longitude" [disableAutoPan]=true id={{point.id}}>
+        <p>Alt:&nbsp;<span>{{point.Alt}}</span></p>
+        <p>GPS_head:&nbsp;{{point.GPS_head}}</p>
+        <p>Acc_mag:&nbsp;{{point.Acc_mag}}</p>
+        <p>Conveyor:&nbsp;{{point.Conveyor}}</p>
+        <p>Spinner:&nbsp;{{point.Spinner}}</p>
+        <p>Prewet:&nbsp;{{point.Prewet}}</p>
+        <p>Time:&nbsp;{{point.time}}</p>
+        </agm-info-window> -->
+
+      <agm-polyline-point  *ngFor="let point of group;let x = index;" [latitude]="point.latitude" [longitude]="point.longitude">
+            <agm-circle [latitude]="point.latitude"  [longitude]="point.longitude" fillColor="green" [radius]="10" 
+            (circleClick)="circleclick(point,pointwindowinfo)"></agm-circle>
+      </agm-polyline-point>
+
+    </agm-polyline>
+
+  </ng-container>
+
+
+
+
+
+
+
+<agm-info-window [disableAutoPan]=true [latitude]="markPoint.marklat" [longitude]="markPoint.marklng" #pointwindowinfo>
+        <p>Alt:&nbsp;<span>{{markPoint.Alt}}</span></p>
+        <p>GPS_head:&nbsp;{{markPoint.GPS_head}}</p>
+        <p>Acc_mag:&nbsp;{{markPoint.Acc_mag}}</p>
+        <p>Conveyor:&nbsp;{{markPoint.Conveyor}}</p>
+        <p>Spinner:&nbsp;{{markPoint.Spinner}}</p>
+        <p>Prewet:&nbsp;{{markPoint.Prewet}}</p>
+        <p>Time:&nbsp;{{markPoint.time}}</p>
+</agm-info-window>
+
+</agm-map>
+
+
+
+</div>
