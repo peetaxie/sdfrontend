@@ -21,6 +21,11 @@ export class LoginComponent implements OnInit {
     const username=target.querySelector('#username').value;
     const password=target.querySelector('#password').value;
     if(username=="user"&&password=="pass"){
+      localStorage.setItem("user","user");
+      this.router.navigate(['home'])
+    }
+    else if(username=="admin"&&password=="pass"){
+      localStorage.setItem("user","admin");
       this.router.navigate(['home'])
     }
     else{

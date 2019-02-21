@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import {NgbDate, NgbCalendar,NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-home',
@@ -37,11 +39,20 @@ export class HomeComponent implements OnInit {
       time: '',
   };
 
-  constructor(private httpClient: HttpClient) {
-   setInterval(() => {
-      this.updatadata();
-    }, 4000);
+  hoveredDate: NgbDate;
 
+  fromDate: NgbDate;
+  toDate: NgbDate;
+  model;
+  closeResult: string
+  user:String= "public";
+  constructor(private httpClient: HttpClient,calendar: NgbCalendar,private modalService: NgbModal) {
+      setInterval(() => {
+        this.updatadata();
+      }, 5000);
+      this.fromDate = calendar.getToday();
+      this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+      this.user=localStorage.getItem("user");
   }
 
 
@@ -59,6 +70,7 @@ export class HomeComponent implements OnInit {
 
 
   circleclick(point,windowinfo){
+      console.log(point);
       this.markPoint.marklat=point.latitude;
       this.markPoint.marklng = point.longitude;
       this.markPoint.Alt = point.Alt;
@@ -167,10 +179,51 @@ export class HomeComponent implements OnInit {
 
   }
 
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+      this.toDate = date;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+
+  isInside(date: NgbDate) {
+    return date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+  }
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+  logout(){
+    localStorage.setItem("user","public");
+    this.user=localStorage.getItem("user");
+  }
 
   ngOnInit() {
     this.updatadata();
-
-
   }
 }

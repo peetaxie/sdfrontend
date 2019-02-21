@@ -4,10 +4,10 @@
   <form class="box" (submit)="login($event)">
   <h1>Henderson Login</h1>
 
-  <input type="text" placeholder="Username" id="username" [(ngModel)]="user" name="username">
-  <input type="password" placeholder="Password" id="password">
+  <input type="text" autocomplete="off" placeholder="Username" id="username" [(ngModel)]="user" name="username">
+  <input type="password" autocomplete="off" placeholder="Password" id="password">
   <input type="submit"  value="Login">
   </form>
 
 </body>
-	<p>{{user}}</p>
+<!-- 	<p>{{user}}</p> -->

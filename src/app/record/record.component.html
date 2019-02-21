@@ -1,0 +1,23 @@
+<div>
+	<agm-map  [latitude]="42.0008" [longitude]="-90.9992" [zoom]="15">
+	  <ng-container >
+	    <agm-polyline  strokeColor="black" [strokeOpacity]="0.6" [clickable]=false>
+	      <agm-polyline-point *ngFor="let point of Record;let i = index;" [latitude]="point.Lat" [longitude]="point.Long">
+	            <agm-circle  [latitude]="point.Lat"  [longitude]="point.Long" fillColor="green" [radius]="2"
+	            (circleClick)="circleclick(point,pointwindowinfo)"></agm-circle>
+	      </agm-polyline-point>
+	    </agm-polyline>
+	  </ng-container>
+
+	<agm-info-window [disableAutoPan]=true [latitude]="markPoint.marklat" [longitude]="markPoint.marklng" #pointwindowinfo>
+	        <p>Alt:&nbsp;<span>{{markPoint.Alt}}</span></p>
+	        <p>GPS_head:&nbsp;{{markPoint.GPS_head}}</p>
+	        <p>Acc_mag:&nbsp;{{markPoint.Acc_mag}}</p>
+	        <p>Conveyor:&nbsp;{{markPoint.Conveyor}}</p>
+	        <p>Spinner:&nbsp;{{markPoint.Spinner}}</p>
+	        <p>Prewet:&nbsp;{{markPoint.Prewet}}</p>
+	        <p>Time:&nbsp;{{markPoint.time}}</p>
+	</agm-info-window>
+
+ 	</agm-map>
+</div>
